@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dunjia.back.mapper.TradeMapper">
+
+    <insert id="addTrade">
+        insert into trades (buyerId, sellerId, productId, productName, totalAmount, status, createTime)
+        values (#{buyerId}, #{sellerId}, #{productId}, #{productName}, #{totalAmount}, #{status}, #{createTime})
+    </insert>
+
+    <update id="updateTradeByProductId">
+        update trades
+        <set>
+            <if test="status != null">status = #{status},</if>
+            <if test="totalAmount != null">totalAmount = #{totalAmount},</if>
+            <if test="buyerId != null">buyerId = #{buyerId},</if>
+            <if test="sellerId != null">sellerId = #{sellerId},</if>
+            <if test="productName != null">productName = #{productName},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+        </set>
+        where productId = #{productId}
+    </update>
+</mapper>

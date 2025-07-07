@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dunjia.back.mapper.UserMapper">
+
+    <insert id="addUser">
+        insert into users (name, password, email, wantList, picture)
+        values (#{name}, #{password}, #{email}, #{wantList}, #{picture})
+    </insert>
+
+    <update id="updateUser">
+        update users
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="wantList != null">wantList = #{wantList},</if>
+            <if test="picture != null">picture = #{picture},</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

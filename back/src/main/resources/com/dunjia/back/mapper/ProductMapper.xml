@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dunjia.back.mapper.ProductMapper">
+    <insert id="addProduct">
+        insert into products (name, price, image, description, address, buyerId, sellerId, `condition`, status, createTime,
+                              likes)
+        values (#{name}, #{price}, #{image}, #{description}, #{address}, #{buyerId}, #{sellerId}, #{condition}, #{status},
+                #{createTime}, #{likes})
+    </insert>
+
+    <update id="updateProduct">
+        update products
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="buyerId != null">buyerId = #{buyerId},</if>
+            <if test="sellerId != null">sellerId = #{sellerId},</if>
+            <if test="condition != null">`condition` = #{condition},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="likes != null">likes = #{likes}</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
