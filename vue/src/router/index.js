@@ -62,8 +62,15 @@ router.beforeEach((to, from, next) => {
 // 页面刷新后恢复上次访问的路由
 router.isReady().then(() => {
     const savedRoute = localStorage.getItem('currentRoute');
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('userRole');
     if (savedRoute) {
-        router.push(savedRoute); // 恢复上次访问的路由
+        // 重新验证token和角色
+        if (token && role) {
+            router.push(savedRoute); // 恢复上次访问的路由
+        } else {
+            router.push({ name: 'Login' });
+        }
     }
 });
 
