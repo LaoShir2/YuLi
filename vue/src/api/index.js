@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// backend API µØÖ·
+// backend API 
 axios.defaults.baseURL = 'http://localhost:8080';
 
-// Ìí¼ÓÇëÇóÀ¹½ØÆ÷£¬×Ô¶¯´øÉÏ token
+
 axios.interceptors.request.use(config => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -11,58 +11,76 @@ axios.interceptors.request.use(config => {
     }
     return config;
 }, (error) => {
+    console.error('è¯·æ±‚å‡ºé”™ï¼š', error);
+    // å¯æ ¹æ®ä¸åŒé”™è¯¯çŠ¶æ€ç ç»™ç”¨æˆ·æç¤º
+    if (error.response) {
+        switch (error.response.status) {
+            case 401:
+                console.log('æœªæŽˆæƒï¼Œè¯·ç™»å½•');
+                // è·³è½¬åˆ°ç™»å½•é¡µé¢
+                router.push({ name: 'Login' });
+                break;
+            case 404:
+                console.log('è¯·æ±‚çš„èµ„æºä¸å­˜åœ¨');
+                break;
+            case 500:
+                console.log('æœåŠ¡å™¨å†…éƒ¨é”™è¯¯');
+                break;
+            default:
+                console.log('æœªçŸ¥é”™è¯¯');
+        }
+    }
     return Promise.reject(error);
 });
 
-// µÇÂ¼
+
 export const login = (loginData) => {
     return axios.post('/login', loginData);
 };
 
-// ÉÏ´«Í¼Æ¬
+
 export const upload = (image) => {
     return axios.post('/upload', image);
 }
 
 
-// ÉÌÆ·API
-// »ñÈ¡ËùÓÐÉÌÆ·
+
 export const getProductList = () => {
     return axios.get('/products');
 }
-// ¸ù¾ÝÂô¼Òid»ñÈ¡ÉÌÆ·
+
 export const getPublishedProductBySellerId = (sellerId) => {
     return axios.get(`/products/profile/${sellerId}`);
 }
-// ¸ù¾ÝwantList»ñÈ¡ÉÌÆ·
+
 export const getWantListProduct = (userId) => {
     return axios.get(`/products/wantList/${userId}`);
 }
-// ËÑË÷ÉÌÆ·
+
 export const searchProduct = (keyword) => {
     return axios.get(`/products/search?keyword=${keyword}`);
 }
-// ·¢²¼ÉÌÆ·
+
 export const publishProduct = (product) => {
     return axios.post('/products', product);
 };
-// »ñÈ¡ÉÌÆ·ÏêÇé
+
 export const getProductDetail = (id) => {
     return axios.get(`/products/${id}`);
 };
-// É¾³ýÉÌÆ·
+
 export const deleteProductById = (id) => {
     return axios.delete(`/products/${id}`);
 }
-//°´¼Û¸ñ¶ÔÉÌÆ·ÅÅÐòµÍµ½¸ß
+
 export const getProductsListByPriceFromL = () => {
     return axios.get('/products/Lower');
 }
-//°´¼Û¸ñ¶ÔÉÌÆ·ÅÅÐò¸ßµ½µÍ
+
 export const getProductsListByPriceFromH = () => {
     return axios.get('/products/Higher');
 }
-//°´Ê±¼äÕ¹Ê¾ÉÌÆ·
+
 export const getProductsListByTime = () => {
     return axios.get('/products/ByTime');
 }
@@ -72,34 +90,33 @@ export const getProductsListByTimeWeek = () => {
 export const getProductsListByTimeMonth = () => {
     return axios.get('/products/ByTimeMonth');
 }
-// ¸üÐÂÉÌÆ·
+
 export const updateProduct = (product) => {
     return axios.put(`/products`, product);
 };
 
 
-// ÓÃ»§API
-// Ìí¼ÓÓÃ»§
+
 export const addUser = (user) => {
     return axios.post('/users', user);
 }
-// ¸ù¾Ýid»ñÈ¡ÓÃ»§
+
 export const getUserById = (id) => {
     return axios.get(`/users/${id}`);
 }
-// ¸ù¾Ýid»ñÈ¡Âô¼Ò
+
 export const getSellerById = (id) => {
     return axios.get(`/sellers/${id}`);
 }
-// ¸ù¾ÝidÉ¾³ýuser
+
 export const deleteUserById = (id) => {
     return axios.delete(`/users/${id}`);
 }
-// »ñÈ¡ËùÓÐÓÃ»§
+
 export const getUserList = () => {
     return axios.get('/users');
 }
-// ½«ÉÌÆ·¼ÓÈë¹ºÎï³µ
+
 export const toggleProductWantList = (userId, productId) => {
     return axios.put('/users/wantList', null, {
         params: {
@@ -108,47 +125,46 @@ export const toggleProductWantList = (userId, productId) => {
         }
     });
 }
-// »ñÈ¡wantList
+
 export const getWantList = (userId) => {
     return axios.get(`/users/wantList/${userId}`);
 }
-// ¸üÐÂÓÃ»§ÐÅÏ¢
+
 export const updateUser = (user) => {
     return axios.put('/users', user);
 }
 
 
-// trade api
-// »ñÈ¡ËùÓÐ½»Ò×
+
 export const getTradeList = () => {
     return axios.get('/trades');
 }
-// ¸ù¾ÝproductId»ñÈ¡½»Ò×
+
 export const getTradeByProductId = (productId) => {
     return axios.get(`/trades/${productId}`);
 }
-// ¸ù¾ÝproductId¸üÐÂ½»Ò×
+
 export const updateTradeByProductId = (productId) => {
     return axios.put(`/trades/${productId}`);
 }
 
 // announcement api
-// »ñÈ¡ËùÓÐ¹«¸æ
+
 export const getAnnouncementList = () => {
     return axios.get('/announcements');
 }
 
-// ¸ù¾Ýid»ñÈ¡¹«¸æ
+
 export const getAnnouncementById = (id) => {
     return axios.get(`/announcements/${id}`);
 }
 
-// Ìí¼Ó¹«¸æ
+
 export const addAnnouncement = (announcement) => {
     return axios.post('/announcements', announcement);
 }
 
-// É¾³ý¹«¸æ
+
 export const deleteAnnouncementById = (id) => {
     return axios.delete(`/announcements/${id}`);
 }
