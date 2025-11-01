@@ -38,7 +38,7 @@
           <table>
             <thead>
             <tr>
-              <th>商品名称</th>
+              <th>商品的名称</th>
               <th>图片</th>
               <th>价格</th>
               <th>地址</th>
